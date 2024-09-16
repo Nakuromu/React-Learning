@@ -1,11 +1,11 @@
 //import Counter from "./Counter/Counter";
-import TodoList from "./TodoList/TodoList";
-import Modal from "./Modal/Modal";
-import Header from "./Header/Header";
+// import TodoList from "./TodoList/TodoList";
+// import Modal from "./Modal/Modal";
+// import Header from "./Header/Header";
+// import LoginForm from "./LoginForm/LoginForm";
+// import Feedback from "./Feedback-App/Feedback";
 import { Component } from "react";
-import LoginForm from "./LoginForm/LoginForm";
-import {nanoid} from 'nanoid';
-import Feedback from "./Feedback-App/Feedback";
+import Contacts from "./Contacts/Contacts";
 
 class App extends Component{
   // state={
@@ -34,7 +34,8 @@ class App extends Component{
         {/* <Header showModal={this.showModal}/>
         <Modal><LoginForm createUser={this.createUser} closeModal={this.closeModal}/></Modal>
         <TodoList/> */}
-        <Feedback/>
+        {/* <Feedback/> */}
+        <Contacts/>
       </div>
     )
   }
