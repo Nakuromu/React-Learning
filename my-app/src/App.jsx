@@ -1,59 +1,62 @@
-//import Counter from "./Counter/Counter";
-// import TodoList from "./TodoList/TodoList";
-// import Modal from "./Modal/Modal";
-// import Header from "./Header/Header";
-// import LoginForm from "./LoginForm/LoginForm";
-// import Feedback from "./Feedback-App/Feedback";
-// import Contacts from "./Contacts/Contacts";
 import { Component } from "react";
-import PockemonForm from "./PockemonApi/PockemonForm";
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import PockemonInfo from "./PockemonApi/PockemonInfo";
+import SearchBar from "./SearchImages/SearchBar";
+import photoApi from './SearchImages/services/searchPhotoApi';
+import ImageGallery from "./SearchImages/ImageGallery";
+import Button from "./SearchImages/Button";
+import Loader from "./SearchImages/Loader";
 
-class App extends Component{
-  // state={
-  //   isShow: false
-  // }
+class App extends Component {
+    state = { 
+        searchQuery: '',
+        page: 1,
+        photoData: null,
+        showBtn: false,
+        loader:false,
+     } 
 
-  // showModal = () => {
-  //   this.setState({isShow: true})
-  // }
+     handleFormSubmit = searchQuery => {
+        this.setState({
+            searchQuery,
+            page: 1,
+            photoData: null,
+            showBtn: false
+        });
+     }
 
-  // closeModal = () => {
-  //   this.setState({isShow: false})
-  // }
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.searchQuery !== this.state.searchQuery || prevState.page !== this.state.page) {
+            this.setState({loader: true})
+            photoApi.fetchPhoto(this.state.searchQuery, this.state.page)
+                .then(data => this.setState(prevState => ({
+                    photoData: prevState.page === 1 ? data.hits : [...prevState.photoData, ...data.hits],
+                    showBtn: data.hits.length > 0 
+                })))
+                .catch(error => console.log(error))
+                .finally(() => this.setState({loader: false}));
+                
+        }
+    }
 
-  // createUser = (data) => {
-  //  const newUser = {
-  //   ...data,
-  //   id:nanoid()
-  //  }
-  //  console.log(newUser)
-  // }
+    handleClick = () => {
+        this.setState(prevState => ({
+            page: prevState.page + 1
+        }));
+    }
 
-  state = {
-    pockemonName: ''
-  }
+    render() { 
+        const { photoData, showBtn, loader } = this.state;
 
-  handleFormSubmit = pockemonName => {
-    this.setState({pockemonName})
-  }
-
-  render(){
-    return (
-      <div className="App">
-        <PockemonForm onSubmit = {this.handleFormSubmit}/>
-        <ToastContainer autoClose={3000}/>
-        <PockemonInfo pockemonName={this.state.pockemonName}/>
-        {/* <Header showModal={this.showModal}/>
-        <Modal><LoginForm createUser={this.createUser} closeModal={this.closeModal}/></Modal>
-        <TodoList/> */}
-        {/* <Feedback/> */}
-        {/* <Contacts/> */}
-      </div>
-    )
-  }
+        return (
+            <>
+                <SearchBar onSubmit={this.handleFormSubmit} />
+                {photoData && <ImageGallery cards={photoData} />}
+                {photoData && photoData.length !== 0 && loader !== true && showBtn && (
+                    <Button loadMoreBtnClick={this.handleClick} />
+                )}
+                {loader && <Loader/>}
+            </>
+        );
+    }
 }
 
 export default App;
