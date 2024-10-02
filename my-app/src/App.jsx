@@ -3,8 +3,8 @@
 // import Modal from "./Modal/Modal";
 // import Header from "./Header/Header";
 // import LoginForm from "./LoginForm/LoginForm";
-// import Feedback from "./Feedback-App/Feedback";
-import Contacts from "./Contacts/Contacts";
+import Feedback from "./Feedback-App/Feedback";
+// import Contacts from "./Contacts/Contacts";
 import { Component } from "react";
 // import PockemonForm from "./PockemonApi/PockemonForm";
 // import { ToastContainer} from 'react-toastify';
@@ -49,8 +49,8 @@ class App extends Component{
         {/* <Header showModal={this.showModal}/>
         <Modal><LoginForm createUser={this.createUser} closeModal={this.closeModal}/></Modal>
         <TodoList/> */}
-        {/* <Feedback/> */}
-        <Contacts/>
+        <Feedback/>
+        {/* <Contacts/> */}
       </div>
     )
   }
