@@ -1,33 +1,34 @@
-import { Component } from "react";
 import PockemonError from "./PockemonError";
 import PokemonData from "./PockemonData";
 import PokemonApi from './services/pokemon-api'
+import { useEffect, useState } from "react";
 
-class PockemonInfo extends Component {
-    state = { 
-        pokemon: null,
-        error: null,
-        status: 'idle'
-     }
-    
-    componentDidUpdate(prevProps, prevState){
-        const prevName = prevProps.pockemonName
-        const nextName = this.props.pockemonName
-        
-        if(prevName !== nextName){
-            this.setState({status: 'pending'})
+const PockemonInfo = ({pockemonName}) => {
+    const [pokemon, setPokemon] = useState(null)
+    const [error, setError] = useState(null)
+    const [status, setStatus] = useState('idle')
+
+
+    useEffect(() => {
+        if (!pockemonName) {
+            return;
+        }
+
+        setStatus('pending');
 
             setTimeout(() => {
-                PokemonApi.fetchPokemon(nextName)
-                .then(pokemon => this.setState({pokemon, status: 'resolved'}))
-                .catch(error => this.setState({error, status: 'rejected'}))
+                PokemonApi.fetchPokemon(pockemonName)
+                .then(pokemon => {
+                    setPokemon(pokemon)
+                    setStatus('resolved')
+                }
+                )
+                .catch(error =>{
+                    setError(error)
+                    setStatus('rejected')
+                })
             }, 1000)
-        }
-    }
-
-    render() { 
-
-        const {pokemon, error, status} = this.state;
+    }, [pockemonName])
 
         if(status === 'idle'){
             return <p>Enter pockemon name</p>
@@ -44,7 +45,6 @@ class PockemonInfo extends Component {
         if (status === "resolved") {
             return <PokemonData pokemon={pokemon}/>
           }
-    }
 }
- 
+
 export default PockemonInfo;

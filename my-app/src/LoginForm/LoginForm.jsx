@@ -14,6 +14,9 @@ class LoginForm extends Component {
      }
 
      handleSubmit = e => {
+        if(this.state.email === '' && this.state.password ===''){
+            return alert('Enter data')  
+        }
         e.preventDefault();
         this.props.createUser({
             email: this.state.email,
