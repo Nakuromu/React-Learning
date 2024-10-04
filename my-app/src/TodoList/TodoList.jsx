@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { nanoid } from "nanoid";
+import { Link } from "react-router-dom";
 
 class TodoList extends Component {
     state = {
@@ -86,7 +87,7 @@ class TodoList extends Component {
                                 checked={todo.completed}
                                 onChange={() => this.handleCheckCompleted(todo.id)}
                             />
-                            {todo.name}
+                                <Link to={todo.id}>{todo.name}</Link>
                             <button onClick={() => this.handleDeleteItem(todo.id)}>Delete</button>
                         </li>
                     ))}

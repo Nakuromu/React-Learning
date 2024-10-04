@@ -2,12 +2,16 @@ import PockemonError from "./PockemonError";
 import PokemonData from "./PockemonData";
 import PokemonApi from './services/pokemon-api'
 import { useEffect, useState } from "react";
+import {useCustomContext} from '../Context/Context'
 
 const PockemonInfo = ({pockemonName}) => {
-    const [pokemon, setPokemon] = useState(null)
+    const {pokemon, setPokemon} = useCustomContext()
     const [error, setError] = useState(null)
     const [status, setStatus] = useState('idle')
 
+    useEffect(() =>{
+        pokemon && setStatus('resolved')
+    }, [pokemon])
 
     useEffect(() => {
         if (!pockemonName) {
